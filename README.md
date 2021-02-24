@@ -3,12 +3,22 @@
 An AWS Lambda for retrieving metadata from video files when uploaded to an S3 bucket
 ## Table of contents
 * [General info](#general-info)
+* [Authors](#authors)
 * [Technologies](#technologies)
 * [Install](#install)
 * [Testing](#testing)
 
 ## General info
 This lambda utilizes the mediainfo library to retrieve metadata from video files (MPEG-4, AVI, MPEG-TS, MPEG-PS, FLV, H.264/AVC, DivX, H.263, H.265 ...) that are stored in a S3 bucket. The code is based in part on the tutorial and code from (https://github.com/kchokshifox/MediaEvaluator) and the mediainfo library from (https://mediaarea.net/en/MediaInfo) which is an opensource software under a BSD-style license "Copyright (c) 2002-2021 MediaArea.net SARL. All rights reserved." The desired meta data fields need to added to the response. For this example, wrapperType, codec, bitRate, width, height, and resolution have been included as they are commonly included in most video format metadata. 
+
+## Authors
+
+- [**Robert Cullen-Keel**](https://github.com/motoroboto)
+- [**Dexter Garner**](https://github.com/johndexteriv)
+- [**Reed Taylor**](https://github.com/reedtlr)
+- [**Thomas Tutchings**](https://github.com/tutchings)
+- [**Tom Nisbet**](https://github.com/TRNisbet)
+- [**Bennett Gould**](https://github.com/bpgould)
 
 	
 ## Technologies
