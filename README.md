@@ -31,22 +31,68 @@ Project is created with:
 * AWS Lambda
 
 ## Install
-Open VSCode to add any aditional meta data fields that you need. Add your MongoDB Atlas db API to line 122. Be sure to create the collection first in MongoDB. Zip the folder and upload to an S3 bucket. Create a Lambda function with a runtime of python 3.7. Create an IAM role with full acccess permisisons to Lambda and full access permissions to S3. Do not add this Lambda to a VPC. Apply the IAM role you just created to the Lambda. Use the 'Upload from' button to upload the zip file with the S3 URI address. Now, add a trigger to your Lambda function for the S3 bucket that the video files will be stored in. Upload a video to test functionality. 
+Open VSCode to add any aditional meta data fields that you need. Add your MongoDB Atlas db API to line 122. Be sure to create the collection first in MongoDB. Zip the folder and upload to an S3 bucket. Create a Lambda function with a runtime of python 3.7. Create an IAM role with full acccess permisisons to Lambda and full access permissions to S3. Do not add this Lambda to a VPC. The resource based policy in your Lambda should look like the following, 
+```{
+  "Version": "2012-10-17",
+  "Id": "default",
+  "Statement": [
+    {
+      "Sid": "lambda-de46be74-cbf3-4f18-87ca-484754dcaddd",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "s3.amazonaws.com"
+      },
+      "Action": "lambda:InvokeFunction",
+      "Resource": "arn:aws:lambda:us-east-1:616082320291:function:<lambda_name>",
+      "Condition": {
+        "StringEquals": {
+          "AWS:SourceAccount": "<aws_account_number>"
+        },
+        "ArnLike": {
+          "AWS:SourceArn": "<ARN_s3_video_bucket>"
+        }
+      }
+    }
+  ]
+}
+```
+
+Apply the IAM role you just created to the Lambda. Add the following permissions to the S3 bucket holding your videos, 
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "<full_ARN_for_the_medinainfo_lambda>"
+            },
+            "Action": [
+                "s3:GetObject",
+                "s3:GetObjectAcl"
+            ],
+            "Resource": "arn:aws:s3:::<bucket_name>/*"
+        }
+    ]
+}
+```
+
+ Use the 'Upload from' button to upload the zip file with the S3 URI address. Now, add a trigger to your Lambda function for the S3 bucket that the video files will be stored in. Upload a video to test functionality. 
 
 
 ## Testing
 For testing purposes, I recommend replacing lines 90 - 92 in mediaEvaluator.py with the following, 
 
-```   bucketName = event['bucketName']```
-
-```   objectName = event['objectKey'] ```
+```   
+bucketName = event['bucketName']
+objectName = event['objectKey']
+```
 
 Now, you can use the Lambda Test feature on the AWS Console by entering the folling as your test,
 
-```{```
-
-```  "bucketName": "<s3 video files bucket>",```
-
-```  "objectKey": "<file name as stored in s3 bucket>"```
-
-```}```  
+```
+{
+"bucketName": "<s3 video files bucket>",
+"objectKey": "<file name as stored in s3 bucket>"
+}
+```  
