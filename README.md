@@ -92,7 +92,7 @@ Now, you can use the Lambda Test feature on the AWS Console by entering the foll
 
 ```
 {
-"bucketName": "<s3 video files bucket>",
-"objectKey": "<file name as stored in s3 bucket>"
+"bucketName": "<s3_video_files_bucket>",
+"objectKey": "<file_name_as_stored_in_s3_bucket>"
 }
 ```  
