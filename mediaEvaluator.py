@@ -107,12 +107,14 @@ def lambda_handler(event, context):
     print('this is ingestData !!!!!!!!!!!!!!!!!!!!!!!', ingestData)
     print('this is mediaAnalysis !!!!!!!!!!!!!!!!!!!!!!!', mediaAnalysis)
 
-    dataNotFake = { 
-        's3url': f'{ingestData["Bucket"]}.s3.amazonaws.com/{ingestData["ObjectKey"]}', 
+   
+    dataResult = { 
+        'name': objectName,
+        'url': f'{ingestData["Bucket"]}.s3.amazonaws.com/{ingestData["ObjectKey"]}', 
         'Codec': mediaAnalysis['Codec'],
         'resolution': mediaAnalysis['Resolution']
     }
-    
-    r = requests.post(url ='<add API URL for your db on mongodb Atlas>', data = dataNotFake)
+     
+    r = requests.post(url ='<add API URL for your db on mongodb Atlas>', data = dataResult)
     
     return ingestData
